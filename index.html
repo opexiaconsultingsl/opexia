@@ -25,12 +25,15 @@ body{
   overflow:hidden;
   background:var(--bg-dark);
   position:relative;
+
+  /* más aire en móvil */
+  padding: clamp(14px, 3.5vw, 28px);
 }
 
 /* AURORA */
 .aurora{
   position:absolute;
-  inset:-30%;
+  inset:-35%;
   background:
     radial-gradient(circle at 20% 40%, rgba(29,78,216,.45), transparent 45%),
     radial-gradient(circle at 80% 30%, rgba(16,185,129,.35), transparent 45%),
@@ -44,61 +47,67 @@ body{
 /* CARD */
 .card{
   position:relative;
-  width:min(720px,92vw);
-  padding:60px 50px;
-  border-radius:22px;
-  background:rgba(255,255,255,.96);
-  backdrop-filter:blur(14px);
-  box-shadow:0 40px 80px rgba(0,0,0,.45);
-  text-align:center;
+  width: min(720px, 100%);
+  max-width: 720px;
+
+  /* padding fluido para que no "se quede mini" */
+  padding: clamp(26px, 6vw, 60px) clamp(18px, 5vw, 50px);
+
+  border-radius: 22px;
+  background: rgba(255,255,255,.96);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 40px 80px rgba(0,0,0,.45);
+  text-align: center;
 
   opacity:0;
-  transform:translateY(25px);
-  animation:cardIn .9s cubic-bezier(.2,.9,.2,1) forwards;
+  transform: translateY(28px);
+  will-change: transform, opacity;
+}
+body.loaded .card{
+  animation: cardIn .9s cubic-bezier(.2,.9,.2,1) forwards;
 }
 
 .badge{
   display:inline-flex;
   align-items:center;
   gap:10px;
-  padding:8px 14px;
+  padding: 8px 14px;
   border-radius:999px;
-  background:rgba(15,23,42,.06);
+  background: rgba(15,23,42,.06);
   font-weight:700;
-  font-size:13px;
+  font-size: clamp(12px, 3.2vw, 13px);
   letter-spacing:.05em;
   text-transform:uppercase;
   color:#0f172a;
 }
-
 .dot{
   width:9px;height:9px;border-radius:999px;
-  background:var(--green);
-  box-shadow:0 0 0 4px rgba(16,185,129,.15);
+  background: var(--green);
+  box-shadow: 0 0 0 4px rgba(16,185,129,.15);
 }
 
+/* Tipografías fluidas */
 h1{
-  margin:20px 0 0;
-  font-size:36px;
+  margin: clamp(14px, 3.8vw, 20px) 0 0;
+  font-size: clamp(26px, 7.2vw, 36px);
   font-weight:800;
   letter-spacing:-.02em;
   color:#0f172a;
 }
-
 .tagline{
-  margin:12px auto 0;
-  font-size:18px;
+  margin: clamp(10px, 2.6vw, 12px) auto 0;
+  font-size: clamp(15px, 4.2vw, 18px);
   font-weight:600;
   color:#475569;
-  max-width:52ch;
+  max-width: 56ch;
   line-height:1.4;
 }
 
 .divider{
-  width:90px;
+  width: clamp(70px, 18vw, 90px);
   height:4px;
-  background:linear-gradient(90deg,var(--accent),var(--green));
-  margin:30px auto 20px;
+  background: linear-gradient(90deg, var(--accent), var(--green));
+  margin: clamp(18px, 5vw, 30px) auto clamp(14px, 4vw, 20px);
   border-radius:999px;
 }
 
@@ -108,72 +117,70 @@ h1{
   justify-content:center;
   gap:10px;
   width:100%;
-  max-width:380px;
-  margin-top:16px;
-  padding:14px 20px;
-  border-radius:14px;
+  max-width: 420px;
+  margin-top: clamp(12px, 3.5vw, 16px);
+  padding: clamp(13px, 3.8vw, 14px) clamp(16px, 4.5vw, 20px);
+  border-radius: 14px;
   text-decoration:none;
   font-weight:800;
-  font-size:15px;
+  font-size: clamp(14px, 3.8vw, 15px);
   color:#fff;
-  background:linear-gradient(135deg,var(--accent),var(--green));
-  box-shadow:0 22px 45px rgba(16,185,129,.25);
-  transition:.25s ease;
+  background: linear-gradient(135deg, var(--accent), var(--green));
+  box-shadow: 0 22px 45px rgba(16,185,129,.25);
+  transition: .25s ease;
+  word-break: break-word; /* por si el email en pantallas muy estrechas */
 }
-
 .btn:hover{
-  transform:translateY(-3px);
-  box-shadow:0 28px 60px rgba(16,185,129,.35);
+  transform: translateY(-3px);
+  box-shadow: 0 28px 60px rgba(16,185,129,.35);
 }
-
-svg{
-  width:18px;height:18px;fill:currentColor;
-}
+svg{ width:18px;height:18px;fill:currentColor; }
 
 footer{
-  margin-top:30px;
-  font-size:13px;
+  margin-top: clamp(16px, 4.5vw, 30px);
+  font-size: clamp(12px, 3.2vw, 13px);
   color:#94a3b8;
+}
+
+/* Extra: en móviles muy pequeños, full-width real y mejor lectura */
+@media (max-width: 380px){
+  .btn{ max-width: 100%; }
+  .badge{ padding: 7px 12px; }
 }
 
 /* Animaciones */
 @keyframes auroraMove{
-  from{transform:translate3d(-3%, -2%, 0) scale(1);}
-  to{transform:translate3d(3%, 2%, 0) scale(1.05);}
+  from{ transform: translate3d(-3%, -2%, 0) scale(1); }
+  to{ transform: translate3d(3%, 2%, 0) scale(1.05); }
 }
-
 @keyframes cardIn{
-  to{opacity:1;transform:translateY(0);}
+  0%{ opacity:0; transform: translateY(28px) scale(.99); }
+  100%{ opacity:1; transform: translateY(0) scale(1); }
 }
 
 @media (prefers-reduced-motion: reduce){
-  .aurora{animation:none}
-  .card{animation:none;opacity:1;transform:none}
-  .btn{transition:none}
+  .aurora{ animation:none }
+  .card{ opacity:1; transform:none; }
+  body.loaded .card{ animation:none }
+  .btn{ transition:none }
 }
 </style>
 </head>
 
 <body>
-
 <div class="aurora"></div>
 
 <main class="card" role="main">
-  <div class="badge">
-    <span class="dot"></span>
-    Página en construcción
-  </div>
+  <div class="badge"><span class="dot"></span>Página en construcción</div>
 
   <h1>OPEXIA CONSULTING</h1>
 
-  <p class="tagline">
-    Consultoría de Excelencia Operacional y Automatización
-  </p>
+  <p class="tagline">Consultoría de Excelencia Operacional y Automatización</p>
 
   <div class="divider"></div>
 
-  <a class="btn" href="mailto:info@opexiaconsulting.com">
-    <svg viewBox="0 0 24 24">
+  <a class="btn" href="mailto:info@opexiaconsulting.com" aria-label="Enviar email a Opexia Consulting">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
     </svg>
     info@opexiaconsulting.com
@@ -182,5 +189,10 @@ footer{
   <footer>© 2026 Opexia Consulting</footer>
 </main>
 
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    requestAnimationFrame(() => document.body.classList.add('loaded'));
+  });
+</script>
 </body>
 </html>
